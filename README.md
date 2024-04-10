@@ -73,3 +73,5 @@ https://pomblue.hatenablog.com/entry/2021/06/08/230146
 # 他
 vook_db_lambda_rakuten-84eea0cd-a965-452a-8b56-a3d5f965e7f3.zipは2024/04/10に本番環境から移行する際に生成したzipファイル。
 本番環境のコードが入っている。
+vook_db_lambda_rakuten-46e484ec-4338-4622-9ef9-1b4437cda8ed.zip
+これが修正版
