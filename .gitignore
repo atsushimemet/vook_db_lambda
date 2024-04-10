@@ -159,8 +159,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .ssh/
-vook_db_lambda_rakuten-84eea0cd-a965-452a-8b56-a3d5f965e7f3.zip
-lambda-layer.zip
-vook_db_lambda_rakuten-46e484ec-4338-4622-9ef9-1b4437cda8ed.zip
 vook_db_v7/local_config.py
 data/.DS_Store
+*.zip
