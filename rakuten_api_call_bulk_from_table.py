@@ -28,7 +28,7 @@ def main(event, context):
         l_df_bulk.append(df_bulk)
     df_bulk = pd.concat(l_df_bulk, axis=0, ignore_index=True)
     # s3_file_name_products_raw_prev = "lambda_output/products_raw_prev.csv"
-    s3_file_name_products_raw_prev = "vook_db/products_raw_prev.csv"
+    s3_file_name_products_raw_prev = "vook-db/products_raw_prev.csv"
     df_bulk = set_id(df_bulk, s3_file_name_products_raw_prev)
     run_all_if_checker(df_bulk)
     # df_bulkをs３に保存
