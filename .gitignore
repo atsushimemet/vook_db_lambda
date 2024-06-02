@@ -162,3 +162,4 @@ cython_debug/
 vook_db_v7/local_config.py
 data/.DS_Store
 *.zip
+.DS_Store
