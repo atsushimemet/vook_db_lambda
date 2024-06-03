@@ -10,3 +10,5 @@ mypy
 pyarrow
 jupyterlab
 jupyterlab_code_formatter
+tqdm
+matplotlib
