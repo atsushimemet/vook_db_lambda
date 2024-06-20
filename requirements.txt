@@ -12,3 +12,4 @@ jupyterlab
 jupyterlab_code_formatter
 tqdm
 matplotlib
+openpyxl
