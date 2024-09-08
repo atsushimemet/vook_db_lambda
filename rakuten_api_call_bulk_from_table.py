@@ -31,8 +31,8 @@ def main(event, context):
     df_bulk = pd.concat(l_df_bulk, axis=0, ignore_index=True)
     df_bulk_not_noise_ng_word = product_noise_judge(df_bulk)
     df_bulk_not_noise_ng_line = product_line_judge(df_bulk_not_noise_ng_word)
-    # s3_file_name_products_raw_prev = "lambda_output/products_raw_prev.csv"
-    s3_file_name_products_raw_prev = "vook-db/products_raw_prev.csv"
+    s3_file_name_products_raw_prev = "lambda_output/products_raw_prev.csv"
+    # s3_file_name_products_raw_prev = "vook-db/products_raw_prev.csv"
     df_bulk_not_noise = set_id(
         df_bulk_not_noise_ng_line, s3_file_name_products_raw_prev
     )

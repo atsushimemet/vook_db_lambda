@@ -1,8 +1,10 @@
 import pandas as pd
+
 from vook_db_v7.rds_handler import get_knowledges
 
 # product_noise_judge.csvを読み込む
 df_product_noise_judge = pd.read_csv("./data/input/product_noise_judge.csv")
+
 
 def product_noise_judge(
     df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge
@@ -19,6 +21,7 @@ def product_noise_judge(
             ].copy()
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
     return pd.concat(l_df_knowledge_excluded)
+
 
 def product_line_judge(df: pd.DataFrame, df_mst: pd.DataFrame = get_knowledges()):
     l_df_knowledge_excluded = []
