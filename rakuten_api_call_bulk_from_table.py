@@ -3,7 +3,11 @@
 
 import pandas as pd
 
-from vook_db_v7.exclude_noise import product_line_judge, product_noise_judge
+from vook_db_v7.exclude_noise import (
+    filter_bulk_by_knowledge,
+    product_line_judge,
+    product_noise_judge,
+)
 
 # from vook_db_v7.config import platform_id
 from vook_db_v7.rds_handler import get_products, put_products
@@ -31,10 +35,13 @@ def main(event, context):
     df_bulk = pd.concat(l_df_bulk, axis=0, ignore_index=True)
     df_bulk_not_noise_ng_word = product_noise_judge(df_bulk)
     df_bulk_not_noise_ng_line = product_line_judge(df_bulk_not_noise_ng_word)
+    df_bulk_not_noise_filter_only_knowledge = filter_bulk_by_knowledge(
+        df_bulk_not_noise_ng_line
+    )
     s3_file_name_products_raw_prev = "lambda_output/products_raw_prev.csv"
     # s3_file_name_products_raw_prev = "vook-db/products_raw_prev.csv"
     df_bulk_not_noise = set_id(
-        df_bulk_not_noise_ng_line, s3_file_name_products_raw_prev
+        df_bulk_not_noise_filter_only_knowledge, s3_file_name_products_raw_prev
     )
     run_all_if_checker(df_bulk_not_noise)
     # df_bulkをs３に保存
