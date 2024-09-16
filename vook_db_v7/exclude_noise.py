@@ -77,8 +77,8 @@ def filter_bulk_by_knowledge(df_bulk):
         if knowledge_info.empty:
             continue  # 該当する知識情報がない場合はスキップ
 
-        line_name = knowledge_info["line_name"].values[0]
-        knowledge_name = knowledge_info["knowledge_name"].values[0]
+        line_name = knowledge_info["line_name"].values[0].replace(" ", "")
+        knowledge_name = knowledge_info["knowledge_name"].values[0].replace(" ", "")
 
         # 対象のデータを一時的にコピー
         df_bulk_tmp = df_bulk[df_bulk["knowledge_id"] == knowledge_id].copy()
