@@ -17,7 +17,7 @@ def product_noise_judge(
             df_judge[df_judge["product_id"] == knowledge_id]["noise_nm"]
         ):
             df_knowledge_tmp = df_knowledge_tmp[
-                [noise not in name for name in df_knowledge_tmp["name"]]
+                ~df_knowledge_tmp["name"].str.contains(noise, regex=True, na=False)
             ].copy()
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
     return pd.concat(l_df_knowledge_excluded)
