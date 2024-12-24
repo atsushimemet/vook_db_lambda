@@ -13,3 +13,4 @@ jupyterlab_code_formatter
 tqdm
 matplotlib
 openpyxl
+pandas-stubs
