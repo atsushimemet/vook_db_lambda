@@ -21,6 +21,7 @@ def generate_mock_data(num_rows=30):
       - 修正点に応じたテストデータを簡単に作成するために利用します。
       - 修正点が発生した場合はテスト要件、ケースを言語化し、そのケースを確認できるようなdf_bulkをこの関数内部の実装を修正することで作成します。
       - 作成方法はtest_utils.pyの末尾に__<issue_no>_<test_case_no>を付与しファイル自体をコピーした後、内部の実装を修正してください。
+      - 内部の実装でgenerate_mock_data_actualとgenerate_mock_data_expected関数を作成してください。
     """
     data = {
         "id": [np.nan for _ in range(num_rows)],
