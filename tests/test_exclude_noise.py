@@ -1,4 +1,9 @@
-from tests.test_utils_10_1 import generate_mock_data_actual, generate_mock_data_expected
+from tests.test_utils_10_1 import (
+    generate_mock_data_actual as generate_mock_data_actual_1,
+)
+from tests.test_utils_10_1 import (
+    generate_mock_data_expected as generate_mock_data_expected_1,
+)
 from vook_db_v7.exclude_noise import (
     product_noise_judge_brand,
 )  # 実際のモジュール名に置き換え
@@ -7,13 +12,13 @@ from vook_db_v7.exclude_noise import (
 def test_product_noise_judge_brand():
     """ブランドレベルのノイズが除外されていることをdf_bulkのname列を使用して確認"""
     # テスト用データ
-    df_bulk_actual = generate_mock_data_actual()
+    df_bulk_actual = generate_mock_data_actual_1()
 
     # 関数を実行
     df_cleaned = product_noise_judge_brand(df_bulk_actual)
 
     # 期待される出力
-    df_bulk_expected = generate_mock_data_expected()
+    df_bulk_expected = generate_mock_data_expected_1()
 
     # name列をセットとして比較
     actual_names = set(df_cleaned["name"])
