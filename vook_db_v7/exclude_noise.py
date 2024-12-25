@@ -2,12 +2,29 @@ import pandas as pd
 
 from vook_db_v7.rds_handler import get_knowledges
 
+# product_noise_judge_brand.csvを読み込む
+df_product_noise_judge_brand = pd.read_csv("./data/input/product_noise_judge_brand.csv")
 # product_noise_judge.csvを読み込む
 df_product_noise_judge = pd.read_csv("./data/input/product_noise_judge.csv")
 
 
-def product_noise_judge_brand():
-    return ""
+def product_noise_judge_brand(
+    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_brand
+):
+    df_from_db = get_knowledges()[["knowledge_id", "brand_id"]].drop_duplicates()
+    df_bulk_brand_id = pd.merge(df, df_from_db, how="left", on="knowledge_id")
+    l_df_knowledge_excluded_brand = []
+    for brand_id in df_bulk_brand_id["brand_id"].unique():
+        df_brand = df_bulk_brand_id[df_bulk_brand_id["brand_id"] == brand_id].copy()
+        df_brand_tmp = df_brand.copy()  # 初期化
+        for i, noise in enumerate(
+            df_judge[df_judge["brand_id"] == brand_id]["noise_nm"]
+        ):
+            df_brand_tmp = df_brand_tmp[
+                ~df_brand_tmp["name"].str.contains(noise, regex=True, na=False)
+            ].copy()
+        l_df_knowledge_excluded_brand.append(df_brand_tmp.copy())
+    return pd.concat(l_df_knowledge_excluded_brand)
 
 
 def product_noise_judge(

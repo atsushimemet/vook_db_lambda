@@ -1,6 +1,7 @@
 SELECT
     a.id as knowledge_id,
     a.name as knowledge_name,
+    a.brand_id,
     b.name as brand_name,
     c.name as line_name
 FROM
