@@ -10,9 +10,10 @@ from tests.test_utils_10_2 import (
 from tests.test_utils_10_2 import (
     generate_mock_data_expected as generate_mock_data_expected_2,
 )
-from vook_db_v7.exclude_noise import (
+from vook_db_v7.exclude_noise import (  # 実際のモジュール名に置き換え
     product_noise_judge_brand,
-)  # 実際のモジュール名に置き換え
+    product_noise_judge_knowledge,
+)
 
 
 def test_product_noise_judge_brand():
@@ -42,7 +43,7 @@ def test_product_noise_judge_knowledge():
     df_bulk_actual = generate_mock_data_actual_2()
 
     # 関数を実行
-    df_cleaned = product_noise_judge_brand(df_bulk_actual)
+    df_cleaned = product_noise_judge_knowledge(df_bulk_actual)
 
     # 期待される出力
     df_bulk_expected = generate_mock_data_expected_2()
