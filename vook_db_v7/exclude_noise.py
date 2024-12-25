@@ -6,6 +6,10 @@ from vook_db_v7.rds_handler import get_knowledges
 df_product_noise_judge = pd.read_csv("./data/input/product_noise_judge.csv")
 
 
+def product_noise_judge_brand():
+    return ""
+
+
 def product_noise_judge(
     df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge
 ):
