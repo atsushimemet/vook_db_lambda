@@ -122,7 +122,6 @@ def filter_bulk_by_knowledge(df_bulk):
     # 結果を1つのデータフレームに統合
     if filtered_dfs:
         return pd.concat(filtered_dfs, ignore_index=True)
-        print("Final combined shape:", df_filtered_bulk.shape)
     else:
         return pd.DataFrame()  # データがない場合の空データフレーム
         print("No matching records found")
