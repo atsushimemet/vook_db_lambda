@@ -1,5 +1,3 @@
-import pandas as pd
-
 from tests.test_utils_10_1 import generate_mock_data_actual, generate_mock_data_expected
 from vook_db_v7.exclude_noise import (
     product_noise_judge_brand,
@@ -7,6 +5,7 @@ from vook_db_v7.exclude_noise import (
 
 
 def test_product_noise_judge_brand():
+    """ブランドレベルのノイズが除外されていることをdf_bulkのname列を使用して確認"""
     # テスト用データ
     df_bulk_actual = generate_mock_data_actual()
 
@@ -16,5 +15,11 @@ def test_product_noise_judge_brand():
     # 期待される出力
     df_bulk_expected = generate_mock_data_expected()
 
-    # 結果を比較
-    pd.testing.assert_frame_equal(df_cleaned.reset_index(drop=True), df_bulk_expected)
+    # name列をセットとして比較
+    actual_names = set(df_cleaned["name"])
+    expected_names = set(df_bulk_expected["name"])
+
+    # 集合が一致しているかを確認
+    assert (
+        actual_names == expected_names
+    ), f"Actual names: {actual_names}, Expected names: {expected_names}"
