@@ -32,7 +32,6 @@ def product_noise_judge_brand(
 def product_noise_judge_knowledge(
     df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_knowledge
 ):
-    print(df_judge[df_judge["knowledge_id"] == 5]["noise_nm"])
     l_df_knowledge_excluded = []
     for knowledge_id in df["knowledge_id"].unique():
         df_knowledge = df[df["knowledge_id"] == knowledge_id].copy()
@@ -40,12 +39,10 @@ def product_noise_judge_knowledge(
         for i, noise in enumerate(
             df_judge[df_judge["knowledge_id"] == knowledge_id]["noise_nm"]
         ):
-            print(noise)
             df_knowledge_tmp = df_knowledge_tmp[
                 ~df_knowledge_tmp["name"].str.contains(noise, regex=True, na=False)
             ].copy()
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
-    # print(pd.concat(l_df_knowledge_excluded)[["knowledge_id", "name"]])
     return pd.concat(l_df_knowledge_excluded)
 
 
