@@ -6,7 +6,8 @@ import pandas as pd
 from vook_db_v7.exclude_noise import (
     filter_bulk_by_knowledge,
     product_line_judge,
-    product_noise_judge,
+    product_noise_judge_brand,
+    product_noise_judge_knowledge,
 )
 
 # from vook_db_v7.config import platform_id
@@ -33,7 +34,10 @@ def main(event, context):
         df_bulk = repeat_dataframe_maker(df_api_input, platform_id, func)
         l_df_bulk.append(df_bulk)
     df_bulk = pd.concat(l_df_bulk, axis=0, ignore_index=True)
-    df_bulk_not_noise_ng_word = product_noise_judge(df_bulk)
+    df_bulk_not_noise_ng_word_brand = product_noise_judge_brand(df_bulk)
+    df_bulk_not_noise_ng_word = product_noise_judge_knowledge(
+        df_bulk_not_noise_ng_word_brand
+    )
     df_bulk_not_noise_ng_line = product_line_judge(df_bulk_not_noise_ng_word)
     df_bulk_not_noise_filter_only_knowledge = filter_bulk_by_knowledge(
         df_bulk_not_noise_ng_line
