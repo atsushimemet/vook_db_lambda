@@ -2,19 +2,42 @@ import pandas as pd
 
 from vook_db_v7.rds_handler import get_knowledges
 
+# product_noise_judge_brand.csvを読み込む
+df_product_noise_judge_brand = pd.read_csv("./data/input/product_noise_judge_brand.csv")
 # product_noise_judge.csvを読み込む
-df_product_noise_judge = pd.read_csv("./data/input/product_noise_judge.csv")
+df_product_noise_judge_knowledge = pd.read_csv(
+    "./data/input/product_noise_judge_knowledge.csv"
+)
 
 
-def product_noise_judge(
-    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge
+def product_noise_judge_brand(
+    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_brand
+):
+    df_from_db = get_knowledges()[["knowledge_id", "brand_id"]].drop_duplicates()
+    df_bulk_brand_id = pd.merge(df, df_from_db, how="left", on="knowledge_id")
+    l_df_knowledge_excluded_brand = []
+    for brand_id in df_bulk_brand_id["brand_id"].unique():
+        df_brand = df_bulk_brand_id[df_bulk_brand_id["brand_id"] == brand_id].copy()
+        df_brand_tmp = df_brand.copy()  # 初期化
+        for i, noise in enumerate(
+            df_judge[df_judge["brand_id"] == brand_id]["noise_nm"]
+        ):
+            df_brand_tmp = df_brand_tmp[
+                ~df_brand_tmp["name"].str.contains(noise, regex=True, na=False)
+            ].copy()
+        l_df_knowledge_excluded_brand.append(df_brand_tmp.copy())
+    return pd.concat(l_df_knowledge_excluded_brand)
+
+
+def product_noise_judge_knowledge(
+    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_knowledge
 ):
     l_df_knowledge_excluded = []
     for knowledge_id in df["knowledge_id"].unique():
         df_knowledge = df[df["knowledge_id"] == knowledge_id].copy()
         df_knowledge_tmp = df_knowledge.copy()  # 初期化
         for i, noise in enumerate(
-            df_judge[df_judge["product_id"] == knowledge_id]["noise_nm"]
+            df_judge[df_judge["knowledge_id"] == knowledge_id]["noise_nm"]
         ):
             df_knowledge_tmp = df_knowledge_tmp[
                 ~df_knowledge_tmp["name"].str.contains(noise, regex=True, na=False)
@@ -101,7 +124,6 @@ def filter_bulk_by_knowledge(df_bulk):
     # 結果を1つのデータフレームに統合
     if filtered_dfs:
         return pd.concat(filtered_dfs, ignore_index=True)
-        print("Final combined shape:", df_filtered_bulk.shape)
     else:
         return pd.DataFrame()  # データがない場合の空データフレーム
         print("No matching records found")
