@@ -1,3 +1,5 @@
+import re
+
 import pandas as pd
 
 from vook_db_v7.rds_handler import get_knowledges
@@ -8,10 +10,14 @@ df_product_noise_judge_brand = pd.read_csv("./data/input/product_noise_judge_bra
 df_product_noise_judge_knowledge = pd.read_csv(
     "./data/input/product_noise_judge_knowledge.csv"
 )
+# product_noise_judge.csvを読み込む
+df_product_keyword_judge_knowledge = pd.read_csv(
+    "./data/input/product_keyword_judge_knowledge.csv"
+)
 
 
 def product_noise_judge_brand(
-    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_brand
+    df: pd.DataFrame, df_noise_judge: pd.DataFrame = df_product_noise_judge_brand
 ):
     df_from_db = get_knowledges()[["knowledge_id", "brand_id"]].drop_duplicates()
     df_bulk_brand_id = pd.merge(df, df_from_db, how="left", on="knowledge_id")
@@ -20,7 +26,7 @@ def product_noise_judge_brand(
         df_brand = df_bulk_brand_id[df_bulk_brand_id["brand_id"] == brand_id].copy()
         df_brand_tmp = df_brand.copy()  # 初期化
         for i, noise in enumerate(
-            df_judge[df_judge["brand_id"] == brand_id]["noise_nm"]
+            df_noise_judge[df_noise_judge["brand_id"] == brand_id]["noise_nm"]
         ):
             df_brand_tmp = df_brand_tmp[
                 ~df_brand_tmp["name"].str.contains(noise, regex=True, na=False)
@@ -30,18 +36,33 @@ def product_noise_judge_brand(
 
 
 def product_noise_judge_knowledge(
-    df: pd.DataFrame, df_judge: pd.DataFrame = df_product_noise_judge_knowledge
+    df: pd.DataFrame,
+    df_noise_judge: pd.DataFrame = df_product_noise_judge_knowledge,
+    df_keyword_judge: pd.DataFrame = df_product_keyword_judge_knowledge,
 ):
     l_df_knowledge_excluded = []
     for knowledge_id in df["knowledge_id"].unique():
         df_knowledge = df[df["knowledge_id"] == knowledge_id].copy()
         df_knowledge_tmp = df_knowledge.copy()  # 初期化
         for i, noise in enumerate(
-            df_judge[df_judge["knowledge_id"] == knowledge_id]["noise_nm"]
+            df_noise_judge[df_noise_judge["knowledge_id"] == knowledge_id]["noise_nm"]
         ):
+            # 商品名にノイズが含まれている場合は除外
             df_knowledge_tmp = df_knowledge_tmp[
                 ~df_knowledge_tmp["name"].str.contains(noise, regex=True, na=False)
             ].copy()
+        for i, keyword in enumerate(
+            df_keyword_judge[df_keyword_judge["knowledge_id"] == knowledge_id][
+                "keyword_nm"
+            ]
+        ):
+            # 商品名にキーワードが含まれている場合は抽出
+            df_knowledge_tmp = df_knowledge_tmp[
+                df_knowledge_tmp["name"].str.contains(
+                    keyword, regex=True, na=False, flags=re.IGNORECASE
+                )
+            ].copy()
+            print(df_knowledge_tmp)
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
     return pd.concat(l_df_knowledge_excluded)
 
