@@ -1,7 +1,6 @@
 import os
 import sys
 from unittest import TestCase
-from unittest.mock import patch
 
 import pandas as pd
 
@@ -32,8 +31,6 @@ from vook_db_v7.utils import (
     DataFrame_maker_yahoo,
     create_api_input,
     repeat_dataframe_maker,
-    set_id,
-    upload_s3,
 )
 
 # rakuten_api_call_bulk_from_table.py のディレクトリをパスに追加
