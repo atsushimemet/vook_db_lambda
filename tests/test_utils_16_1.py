@@ -105,7 +105,7 @@ def generate_mock_data_expected(num_rows=5):
       - 内部の実装でgenerate_mock_data_actualとgenerate_mock_data_expected関数を作成してください。
     """
     data = {
-        "id": [np.nan for _ in range(num_rows)],
+        "id": [np.nan for _ in range(num_rows - 2)],
         "name": [
             "【中古】リーバイス 501 先染め BLK",
             "【中古】リーバイス 501 先染め black",
@@ -131,7 +131,7 @@ def generate_mock_data_expected(num_rows=5):
             1,
             1,
         ],
-        "size_id": [999 for _ in range(num_rows)],
+        "size_id": [999 for _ in range(num_rows - 2)],
         "created_at": [
             "2024-12-24 15:41:38.556295",
             "2024-12-24 15:47:55.986734",
