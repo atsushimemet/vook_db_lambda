@@ -1,3 +1,5 @@
+import re
+
 import pandas as pd
 
 from vook_db_v7.rds_handler import get_knowledges
@@ -56,8 +58,11 @@ def product_noise_judge_knowledge(
         ):
             # 商品名にキーワードが含まれている場合は抽出
             df_knowledge_tmp = df_knowledge_tmp[
-                df_knowledge_tmp["name"].str.contains(keyword, regex=True, na=False)
+                df_knowledge_tmp["name"].str.contains(
+                    keyword, regex=True, na=False, flags=re.IGNORECASE
+                )
             ].copy()
+            print(df_knowledge_tmp)
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
     return pd.concat(l_df_knowledge_excluded)
 
