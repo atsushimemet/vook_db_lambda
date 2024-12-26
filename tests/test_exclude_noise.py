@@ -101,6 +101,8 @@ class TestMainFunction(TestCase):
         print("product_noise_judge_brandとproduct_noise_judge_knowledgeの完了")
         self.assertIsInstance(df_bulk_not_noise_ng_word, pd.DataFrame)
         print("df_bulk_not_noise_ng_wordがDataFrameであることを確認")
+        self.assertTrue(len(df_bulk_not_noise_ng_word))
+        print("df_bulk_not_noise_ng_word が1行以上のデータを持っていることを確認")
         print("product_noise_judge_brand, knowledgeの正常終了を確認")
 
 
