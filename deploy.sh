@@ -13,7 +13,7 @@ zip -r $ZIP_FILE . \
     -x ".env/*" \
     -x ".git/*" \
     -x ".mypy_cache/*" \
-    -x "vook_db_v7/__pycache__/*" \
+    -x "vook_db_lambda/__pycache__/*" \
     -x "notebook/*" \
     -x "data/.DS_Store" \
     -x "*/.ipynb_checkpoints/*"
