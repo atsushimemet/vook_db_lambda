@@ -5,7 +5,7 @@ echo "Deleting existing ZIP files in the current directory..."
 find . -maxdepth 1 -name "*.zip" -exec rm -v {} \;
 
 # 新しいZIPファイル名を設定
-ZIP_FILE="vook_db_lambda_20241226_1.zip"
+ZIP_FILE="vook_db_lambda_20241227_1.zip"
 
 # 新しいZIPファイルを作成
 echo "Creating new ZIP file: $ZIP_FILE"
