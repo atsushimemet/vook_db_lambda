@@ -236,7 +236,7 @@ def repeat_dataframe_maker(
         df_bulk = pd.concat([df_bulk, output], ignore_index=True)
         sleep(sleep_second)
         # テストでは、1知識で試す
-        break
+        # break
     return df_bulk  # TODO:lambda実行でempty dataframe 原因調査から
 
 
