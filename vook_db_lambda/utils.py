@@ -235,8 +235,8 @@ def repeat_dataframe_maker(
         output = func(query, platform_id, knowledge_id, size_id)
         df_bulk = pd.concat([df_bulk, output], ignore_index=True)
         sleep(sleep_second)
-        # 開発環境では、1知識で試す
-        # break
+        # テストでは、1知識で試す
+        break
     return df_bulk  # TODO:lambda実行でempty dataframe 原因調査から
 
 
