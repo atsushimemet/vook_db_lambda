@@ -9,8 +9,6 @@ from vook_db_lambda.exclude_noise import (
     product_noise_judge_brand,
     product_noise_judge_knowledge,
 )
-
-# from vook_db_lambda.config import platform_id
 from vook_db_lambda.rds_handler import get_products, put_products
 from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
@@ -24,9 +22,9 @@ from vook_db_lambda.utils import (
 
 
 def main(event, context):
-    # APIのインプットデータ作成
+    print("APIのインプットデータ作成")
     df_api_input = create_api_input()
-    # df_bulkの作成
+    print("df_bulkの作成")
     l_df_bulk = []
     for platform_id, func in zip(
         [1, 2], [DataFrame_maker_rakuten, DataFrame_maker_yahoo]
@@ -43,16 +41,15 @@ def main(event, context):
         df_bulk_not_noise_ng_line
     )
     s3_file_name_products_raw_prev = "lambda_output/products_raw_prev.csv"
-    # s3_file_name_products_raw_prev = "vook-db/products_raw_prev.csv"
     df_bulk_not_noise = set_id(
         df_bulk_not_noise_filter_only_knowledge, s3_file_name_products_raw_prev
     )
     run_all_if_checker(df_bulk_not_noise)
-    # df_bulkをs３に保存
+    print("df_bulkをs3に保存")
     upload_s3(df_bulk_not_noise, s3_file_name_products_raw_prev)
-    # # df_bulkをRDSに保存
+    print("df_bulkをRDSに保存")
     put_products(df_bulk_not_noise)
-    # # RDSに保存したデータを確認
+    print("RDSに保存したデータを確認")
     df_from_db = get_products()
     print("shape:", df_from_db.shape)
     print("id min:", df_from_db["id"].min())
