@@ -22,11 +22,11 @@ from tests.test_utils_16_1 import (
 from tests.test_utils_16_1 import (
     generate_mock_data_expected as generate_mock_data_expected_16_1,
 )
-from vook_db_v7.exclude_noise import (  # 実際のモジュール名に置き換え
+from vook_db_lambda.exclude_noise import (  # 実際のモジュール名に置き換え
     product_noise_judge_brand,
     product_noise_judge_knowledge,
 )
-from vook_db_v7.utils import (
+from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
     create_api_input,

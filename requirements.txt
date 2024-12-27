@@ -15,3 +15,4 @@ matplotlib
 openpyxl
 pandas-stubs
 pytest
+types-requests
