@@ -14,8 +14,8 @@ import numpy as np
 import pandas as pd
 import requests
 
-from vook_db_v7.config import MAX_PAGE  # s3_file_name_products_raw_prev,
-from vook_db_v7.config import (
+from vook_db_lambda.config import MAX_PAGE  # s3_file_name_products_raw_prev,
+from vook_db_lambda.config import (
     REQ_URL,
     REQ_URL_CATE,
     WANT_ITEMS_RAKUTEN,
@@ -25,8 +25,8 @@ from vook_db_v7.config import (
     size_id,
     sleep_second,
 )
-from vook_db_v7.local_config import ClientId, aff_id
-from vook_db_v7.rds_handler import get_knowledges
+from vook_db_lambda.local_config import ClientId, aff_id
+from vook_db_lambda.rds_handler import get_knowledges
 
 
 def DataFrame_maker_rakuten(keyword, platform_id, knowledge_id, size_id):

@@ -3,17 +3,17 @@
 
 import pandas as pd
 
-from vook_db_v7.exclude_noise import (
+from vook_db_lambda.exclude_noise import (
     filter_bulk_by_knowledge,
     product_line_judge,
     product_noise_judge_brand,
     product_noise_judge_knowledge,
 )
 
-# from vook_db_v7.config import platform_id
-from vook_db_v7.rds_handler import get_products, put_products
-from vook_db_v7.tests import run_all_if_checker
-from vook_db_v7.utils import (
+# from vook_db_lambda.config import platform_id
+from vook_db_lambda.rds_handler import get_products, put_products
+from vook_db_lambda.tests import run_all_if_checker
+from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
     create_api_input,

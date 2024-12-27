@@ -2,7 +2,7 @@ import re
 
 import pandas as pd
 
-from vook_db_v7.rds_handler import get_knowledges
+from vook_db_lambda.rds_handler import get_knowledges
 
 # product_noise_judge_brand.csvを読み込む
 df_product_noise_judge_brand = pd.read_csv("./data/input/product_noise_judge_brand.csv")

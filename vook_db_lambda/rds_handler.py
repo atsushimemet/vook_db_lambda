@@ -2,7 +2,7 @@ import pandas as pd
 import pymysql
 from sshtunnel import SSHTunnelForwarder
 
-from vook_db_v7.local_config import (
+from vook_db_lambda.local_config import (
     get_ec2_config,
     get_rds_config,
     get_rds_config_for_put,
@@ -27,7 +27,7 @@ def read_sql_file(file_path):
 
 def get_knowledges():
     config_ec2 = get_ec2_config()
-    query = read_sql_file("./vook_db_v7/sql/knowledges.sql")
+    query = read_sql_file("./vook_db_lambda/sql/knowledges.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
         (config_ec2["host_name"], config_ec2["ec2_port"]),
@@ -46,7 +46,11 @@ def get_knowledges():
             )
             cursor = conn.cursor()
             cursor.execute(query)
-            for row in cursor:  # column1, column2, ...は取得したいカラム名に合わせて変更してください
+            for (
+                row
+            ) in (
+                cursor
+            ):  # column1, column2, ...は取得したいカラム名に合わせて変更してください
                 df_from_db = pd.concat(
                     [df_from_db, pd.DataFrame([row])], ignore_index=True
                 )
@@ -60,8 +64,8 @@ def get_knowledges():
 
 def put_products(df_bulk):
     config_ec2 = put_ec2_config()
-    create_table_query = read_sql_file("./vook_db_v7/sql/create_products.sql")
-    insert_query = read_sql_file("./vook_db_v7/sql/insert_into_products.sql")
+    create_table_query = read_sql_file("./vook_db_lambda/sql/create_products.sql")
+    insert_query = read_sql_file("./vook_db_lambda/sql/insert_into_products.sql")
     with SSHTunnelForwarder(
         (config_ec2["host_name"], config_ec2["ec2_port"]),
         ssh_username=config_ec2["ssh_username"],
@@ -103,7 +107,9 @@ def put_products(df_bulk):
                 except pymysql.MySQLError as e:
                     print(f"Error connecting to MySQL: {e}")
             conn.commit()
-        except pymysql.MySQLError as e:  # TODO: 不要なtry-exceptブロックは削除する。現在未検証。
+        except (
+            pymysql.MySQLError
+        ) as e:  # TODO: 不要なtry-exceptブロックは削除する。現在未検証。
             print(f"Error connecting to MySQL: {e}")
         finally:
             if conn is not None:
@@ -112,7 +118,7 @@ def put_products(df_bulk):
 
 def get_products():
     config_ec2 = put_ec2_config()
-    query = read_sql_file("./vook_db_v7/sql/products.sql")
+    query = read_sql_file("./vook_db_lambda/sql/products.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
         (config_ec2["host_name"], config_ec2["ec2_port"]),
@@ -132,7 +138,11 @@ def get_products():
             )
             cursor = conn.cursor()
             cursor.execute(query)
-            for row in cursor:  # column1, column2, ...は取得したいカラム名に合わせて変更してください
+            for (
+                row
+            ) in (
+                cursor
+            ):  # column1, column2, ...は取得したいカラム名に合わせて変更してください
                 df_from_db = pd.concat(
                     [df_from_db, pd.DataFrame([row])], ignore_index=True
                 )
