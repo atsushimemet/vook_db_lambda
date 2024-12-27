@@ -68,6 +68,6 @@ platform_id = 2
 size_id = 999
 sleep_second = 1
 
-# s3_bucket = "vook-vook"
-s3_bucket = "vook-bucket"
+s3_bucket = "vook-vook"
+# s3_bucket = "vook-bucket"
 s3_file_name_products_raw_prev = f"vook_db/products_raw_prev_{platform_id}.csv"

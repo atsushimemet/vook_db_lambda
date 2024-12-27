@@ -32,7 +32,7 @@ def product_noise_judge_brand(
                 ~df_brand_tmp["name"].str.contains(noise, regex=True, na=False)
             ].copy()
         l_df_knowledge_excluded_brand.append(df_brand_tmp.copy())
-    return pd.concat(l_df_knowledge_excluded_brand)
+    return pd.concat(l_df_knowledge_excluded_brand).drop("brand_id", axis=1)
 
 
 def product_noise_judge_knowledge(
