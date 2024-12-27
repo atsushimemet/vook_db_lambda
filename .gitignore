@@ -159,7 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .ssh/
-vook_db_v7/local_config.py
+vook_db_lambda/local_config.py
 data/.DS_Store
 *.zip
 .DS_Store

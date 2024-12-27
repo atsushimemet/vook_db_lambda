@@ -14,8 +14,8 @@ import numpy as np
 import pandas as pd
 import requests
 
-from vook_db_v7.config import MAX_PAGE  # s3_file_name_products_raw_prev,
-from vook_db_v7.config import (
+from vook_db_lambda.config import MAX_PAGE  # s3_file_name_products_raw_prev,
+from vook_db_lambda.config import (
     REQ_URL,
     REQ_URL_CATE,
     WANT_ITEMS_RAKUTEN,
@@ -25,8 +25,8 @@ from vook_db_v7.config import (
     size_id,
     sleep_second,
 )
-from vook_db_v7.local_config import ClientId, aff_id
-from vook_db_v7.rds_handler import get_knowledges
+from vook_db_lambda.local_config import ClientId, aff_id
+from vook_db_lambda.rds_handler import get_knowledges
 
 
 def DataFrame_maker_rakuten(keyword, platform_id, knowledge_id, size_id):
@@ -235,7 +235,7 @@ def repeat_dataframe_maker(
         output = func(query, platform_id, knowledge_id, size_id)
         df_bulk = pd.concat([df_bulk, output], ignore_index=True)
         sleep(sleep_second)
-        # 開発環境では、1知識で試す
+        # テストでは、1知識で試す
         # break
     return df_bulk  # TODO:lambda実行でempty dataframe 原因調査から
 
