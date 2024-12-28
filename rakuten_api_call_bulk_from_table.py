@@ -3,7 +3,7 @@
 
 import pandas as pd
 
-from vook_db_lambda.config import dev_mode, s3_bucket, test_flg
+from vook_db_lambda.config import s3_bucket, test_flg
 from vook_db_lambda.exclude_noise import (
     filter_bulk_by_knowledge,
     product_line_judge,
@@ -24,11 +24,6 @@ from vook_db_lambda.utils import (
 
 
 def main(event, context):
-    if dev_mode:
-        if not confirm_name("テストフラグ", test_flg):
-            return
-        if not confirm_name("S3バケット", s3_bucket):
-            return
     print("テストフラグ:", test_flg)
     print("S3バケット:", s3_bucket)
     print("APIのインプットデータ作成")
