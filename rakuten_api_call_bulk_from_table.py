@@ -3,6 +3,7 @@
 
 import pandas as pd
 
+from vook_db_lambda.config import s3_bucket, test_flg
 from vook_db_lambda.exclude_noise import (
     filter_bulk_by_knowledge,
     product_line_judge,
@@ -14,7 +15,7 @@ from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
-    confirm_bucket_name,
+    confirm_name,
     create_api_input,
     repeat_dataframe_maker,
     set_id,
@@ -23,7 +24,9 @@ from vook_db_lambda.utils import (
 
 
 def main(event, context):
-    if not confirm_bucket_name():
+    if not confirm_name("テストフラグ", test_flg):
+        return
+    if not confirm_name("S3バケット", s3_bucket):
         return
     print("APIのインプットデータ作成")
     df_api_input = create_api_input()
