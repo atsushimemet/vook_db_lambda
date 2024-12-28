@@ -24,6 +24,7 @@ from vook_db_lambda.config import (
     s3_bucket,
     size_id,
     sleep_second,
+    test_flg,
 )
 from vook_db_lambda.local_config import ClientId, aff_id
 from vook_db_lambda.rds_handler import get_knowledges
@@ -235,8 +236,9 @@ def repeat_dataframe_maker(
         output = func(query, platform_id, knowledge_id, size_id)
         df_bulk = pd.concat([df_bulk, output], ignore_index=True)
         sleep(sleep_second)
-        # テストでは、1知識で試す
-        # break
+        if test_flg:
+            # テストでは、実行時間短縮のために1知識で試す
+            break
     return df_bulk  # TODO:lambda実行でempty dataframe 原因調査から
 
 
@@ -326,3 +328,14 @@ def set_id(
         PREV_ID_MAX = df_prev["id"].max()
         df_bulk["id"] = np.arange(PREV_ID_MAX, PREV_ID_MAX + len(df_bulk)) + 1
     return df_bulk
+
+
+def confirm_name(name, value, input_func=input):
+    print(f"指定された{name}: {value}")
+    user_input = (
+        input_func(f"この{name}で処理を進めますか？ (yes/no): ").strip().lower()
+    )
+    if user_input != "yes":
+        print("処理を中止します。")
+        return False
+    return True
