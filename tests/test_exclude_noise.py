@@ -4,22 +4,22 @@ from unittest import TestCase
 
 import pandas as pd
 
-from tests.test_utils_10_1 import (
+from tests.test_data_10_1 import (
     generate_mock_data_actual as generate_mock_data_actual_1,
 )
-from tests.test_utils_10_1 import (
+from tests.test_data_10_1 import (
     generate_mock_data_expected as generate_mock_data_expected_1,
 )
-from tests.test_utils_10_2 import (
+from tests.test_data_10_2 import (
     generate_mock_data_actual as generate_mock_data_actual_2,
 )
-from tests.test_utils_10_2 import (
+from tests.test_data_10_2 import (
     generate_mock_data_expected as generate_mock_data_expected_2,
 )
-from tests.test_utils_16_1 import (
+from tests.test_data_16_1 import (
     generate_mock_data_actual as generate_mock_data_actual_16_1,
 )
-from tests.test_utils_16_1 import (
+from tests.test_data_16_1 import (
     generate_mock_data_expected as generate_mock_data_expected_16_1,
 )
 from vook_db_lambda.exclude_noise import (  # 実際のモジュール名に置き換え

@@ -1,9 +1,7 @@
 from unittest import TestCase
-from unittest.mock import Mock
 
 import pandas as pd
 
-from vook_db_lambda.config import s3_bucket, test_flg
 from vook_db_lambda.exclude_noise import (
     filter_bulk_by_knowledge,
     product_line_judge,
@@ -15,7 +13,6 @@ from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
-    confirm_name,
     create_api_input,
     repeat_dataframe_maker,
     set_id,
@@ -26,11 +23,6 @@ from vook_db_lambda.utils import (
 class TestMainFunction(TestCase):
 
     def test_main_function(self):
-        mock_input = Mock(return_value="yes")
-        if not confirm_name("テストフラグ", test_flg, input_func=mock_input):
-            return
-        if not confirm_name("S3バケット", s3_bucket, input_func=mock_input):
-            return
         print("APIのインプットデータ作成")
         df_api_input = create_api_input()
         print("df_bulkの作成")
@@ -63,27 +55,3 @@ class TestMainFunction(TestCase):
         print("shape:", df_from_db.shape)
         print("id min:", df_from_db["id"].min())
         print("id max:", df_from_db["id"].max())
-
-
-class TestMainFunctionConfirmConfig(TestCase):
-    """note: S3バケットのみテスト。テストフラグも同様のテストになるため"""
-
-    def test_confirm_bucket_name_yes(self):
-        mock_input = Mock(return_value="yes")
-        result = confirm_name("S3バケット", s3_bucket, input_func=mock_input)
-        self.assertTrue(result)
-
-    def test_confirm_bucket_name_Yes(self):
-        mock_input = Mock(return_value="Yes")
-        result = confirm_name("S3バケット", s3_bucket, input_func=mock_input)
-        self.assertTrue(result)
-
-    def test_confirm_bucket_name_no(self):
-        mock_input = Mock(return_value="no")
-        result = confirm_name("S3バケット", s3_bucket, input_func=mock_input)
-        self.assertFalse(result)
-
-    def test_confirm_bucket_name_other_value(self):
-        mock_input = Mock(return_value="hello")
-        result = confirm_name("S3バケット", s3_bucket, input_func=mock_input)
-        self.assertFalse(result)
