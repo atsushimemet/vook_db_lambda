@@ -2,6 +2,7 @@ import pandas as pd
 import pymysql
 from sshtunnel import SSHTunnelForwarder
 
+from vook_db_lambda.config import test_flg
 from vook_db_lambda.local_config import (
     ec2_config_dev,
     ec2_config_prd,
@@ -18,11 +19,11 @@ def get_ec2_config(test_flg):
         return ec2_config_prd()
 
 
-def get_db_config(test_flg):
+def get_db_config(test_flg, port):
     if test_flg == 1:
-        return rds_config_dev()
+        return rds_config_dev(port)
     else:
-        return rds_config_prd()
+        return rds_config_prd(port)
 
 
 def read_sql_file(file_path):
@@ -41,7 +42,7 @@ def read_sql_file(file_path):
 
 
 def get_knowledges():
-    config = get_ec2_config()()
+    config = get_ec2_config(test_flg)
     query = read_sql_file("./vook_db_lambda/sql/knowledges.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
@@ -57,7 +58,7 @@ def get_knowledges():
         conn = None
         try:
             conn = pymysql.connect(
-                **get_db_config()(server.local_bind_port), connect_timeout=10
+                **get_db_config(test_flg, server.local_bind_port), connect_timeout=10
             )
             cursor = conn.cursor()
             cursor.execute(query)
@@ -78,7 +79,7 @@ def get_knowledges():
 
 
 def put_products(df_bulk):
-    config = get_ec2_config()()
+    config = get_ec2_config(test_flg)
     create_table_query = read_sql_file("./vook_db_lambda/sql/create_products.sql")
     insert_query = read_sql_file("./vook_db_lambda/sql/insert_into_products.sql")
     with SSHTunnelForwarder(
@@ -94,7 +95,7 @@ def put_products(df_bulk):
         conn = None
         try:
             conn = pymysql.connect(
-                **get_db_config()(server.local_bind_port),
+                **get_db_config(test_flg, server.local_bind_port),
                 connect_timeout=10,
             )
             cursor = conn.cursor()
@@ -132,7 +133,7 @@ def put_products(df_bulk):
 
 
 def get_products():
-    config = get_ec2_config()()
+    config = get_ec2_config(test_flg)
     query = read_sql_file("./vook_db_lambda/sql/products.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
@@ -148,7 +149,7 @@ def get_products():
         conn = None
         try:
             conn = pymysql.connect(
-                **get_db_config()(server.local_bind_port),
+                **get_db_config(test_flg, server.local_bind_port),
                 connect_timeout=10,
             )
             cursor = conn.cursor()
