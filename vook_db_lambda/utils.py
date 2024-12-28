@@ -24,6 +24,7 @@ from vook_db_lambda.config import (
     s3_bucket,
     size_id,
     sleep_second,
+    test_flg,
 )
 from vook_db_lambda.local_config import ClientId, aff_id
 from vook_db_lambda.rds_handler import get_knowledges
@@ -235,8 +236,9 @@ def repeat_dataframe_maker(
         output = func(query, platform_id, knowledge_id, size_id)
         df_bulk = pd.concat([df_bulk, output], ignore_index=True)
         sleep(sleep_second)
-        # テストでは、1知識で試す
-        # break
+        if test_flg:
+            # テストでは、実行時間短縮のために1知識で試す
+            break
     return df_bulk  # TODO:lambda実行でempty dataframe 原因調査から
 
 
