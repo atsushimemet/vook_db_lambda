@@ -81,3 +81,4 @@ zip -r lambda-layer.zip ./python
    3. Lambdaの機能でテストする。
 8. 完了後にPRをマージする。
 9. ローカル開発環境のmainを最新にする。
+※ WEB画面上に影響が出ている場合は、この限りでない。hotfixブランチを切って対応する。[参考](https://github.com/atsushimemet/vook_db_lambda/pull/41)
