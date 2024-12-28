@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest.mock import Mock
 
 import pandas as pd
 
@@ -13,6 +14,7 @@ from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
+    confirm_bucket_name,
     create_api_input,
     repeat_dataframe_maker,
     set_id,
@@ -55,3 +57,23 @@ class TestMainFunction(TestCase):
         print("shape:", df_from_db.shape)
         print("id min:", df_from_db["id"].min())
         print("id max:", df_from_db["id"].max())
+
+    def test_confirm_bucket_name_yes(self):
+        mock_input = Mock(return_value="yes")
+        result = confirm_bucket_name(input_func=mock_input)
+        self.assertTrue(result)
+
+    def test_confirm_bucket_name_Yes(self):
+        mock_input = Mock(return_value="Yes")
+        result = confirm_bucket_name(input_func=mock_input)
+        self.assertTrue(result)
+
+    def test_confirm_bucket_name_no(self):
+        mock_input = Mock(return_value="no")
+        result = confirm_bucket_name(input_func=mock_input)
+        self.assertFalse(result)
+
+    def test_confirm_bucket_name_other_value(self):
+        mock_input = Mock(return_value="hello")
+        result = confirm_bucket_name(input_func=mock_input)
+        self.assertFalse(result)
