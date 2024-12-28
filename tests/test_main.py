@@ -26,7 +26,7 @@ from vook_db_lambda.utils import (
 class TestMainFunction(TestCase):
 
     def test_main_function(self):
-        mock_input = Mock(return_value="yes")
+        mock_input = Mock(return_value="no")
         if not confirm_name("テストフラグ", test_flg, input_func=mock_input):
             return
         if not confirm_name("S3バケット", s3_bucket, input_func=mock_input):
