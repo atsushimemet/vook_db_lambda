@@ -19,8 +19,11 @@ from tests.test_data_10_2 import (
 from tests.test_data_16_1 import (
     generate_mock_data_actual as generate_mock_data_actual_16_1,
 )
-from tests.test_data_16_1 import (
-    generate_mock_data_expected as generate_mock_data_expected_16_1,
+from tests.test_data_34_1 import (
+    generate_mock_data_actual as generate_mock_data_actual_34_1,
+)
+from tests.test_data_34_1 import (
+    generate_mock_data_expected as generate_mock_data_expected_34_1,
 )
 from vook_db_lambda.exclude_noise import (  # 実際のモジュール名に置き換え
     product_noise_judge_brand,
@@ -116,6 +119,26 @@ def test_product_noise_judge_knowledge_keyword():
 
     # 期待される出力
     df_bulk_expected = generate_mock_data_expected_16_1()
+
+    # name列をセットとして比較
+    actual_names = set(df_cleaned["name"])
+    expected_names = set(df_bulk_expected["name"])
+
+    # 集合が一致しているかを確認
+    assert (
+        actual_names == expected_names
+    ), f"Actual names: {actual_names}, Expected names: {expected_names}"
+
+
+def test_product_noise_judge_knowledge_jumblestore():
+    # テスト用データ
+    df_bulk_actual = generate_mock_data_actual_34_1()
+
+    # 関数を実行
+    df_cleaned = product_noise_judge_knowledge(df_bulk_actual)
+
+    # 期待される出力
+    df_bulk_expected = generate_mock_data_expected_34_1()
 
     # name列をセットとして比較
     actual_names = set(df_cleaned["name"])
