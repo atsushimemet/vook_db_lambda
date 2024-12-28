@@ -62,7 +62,12 @@ def product_noise_judge_knowledge(
                     keyword, regex=True, na=False, flags=re.IGNORECASE
                 )
             ].copy()
-            print(df_knowledge_tmp)
+        # urlにjumblestoreが含まれていない場合を抽出
+        df_knowledge_tmp = df_knowledge_tmp[
+            ~df_knowledge_tmp["url"].str.contains(
+                "jumblestore", regex=True, na=False, flags=re.IGNORECASE
+            )
+        ].copy()
         l_df_knowledge_excluded.append(df_knowledge_tmp.copy())
     return pd.concat(l_df_knowledge_excluded)
 
