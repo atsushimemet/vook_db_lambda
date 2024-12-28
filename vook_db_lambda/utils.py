@@ -328,14 +328,3 @@ def set_id(
         PREV_ID_MAX = df_prev["id"].max()
         df_bulk["id"] = np.arange(PREV_ID_MAX, PREV_ID_MAX + len(df_bulk)) + 1
     return df_bulk
-
-
-def confirm_name(name, value, input_func=input):
-    print(f"指定された{name}: {value}")
-    user_input = (
-        input_func(f"この{name}で処理を進めますか？ (yes/no): ").strip().lower()
-    )
-    if user_input != "yes":
-        print("処理を中止します。")
-        return False
-    return True

@@ -15,7 +15,6 @@ from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
-    confirm_name,
     create_api_input,
     repeat_dataframe_maker,
     set_id,
