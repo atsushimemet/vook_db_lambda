@@ -14,6 +14,7 @@ from vook_db_lambda.tests import run_all_if_checker
 from vook_db_lambda.utils import (
     DataFrame_maker_rakuten,
     DataFrame_maker_yahoo,
+    confirm_bucket_name,
     create_api_input,
     repeat_dataframe_maker,
     set_id,
@@ -22,6 +23,8 @@ from vook_db_lambda.utils import (
 
 
 def main(event, context):
+    if not confirm_bucket_name():
+        return
     print("APIのインプットデータ作成")
     df_api_input = create_api_input()
     print("df_bulkの作成")

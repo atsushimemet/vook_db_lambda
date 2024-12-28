@@ -326,3 +326,14 @@ def set_id(
         PREV_ID_MAX = df_prev["id"].max()
         df_bulk["id"] = np.arange(PREV_ID_MAX, PREV_ID_MAX + len(df_bulk)) + 1
     return df_bulk
+
+
+def confirm_bucket_name(input_func=input):
+    print(f"指定されたS3バケット名: {s3_bucket}")
+    user_input = (
+        input_func("このバケット名で処理を進めますか？ (yes/no): ").strip().lower()
+    )
+    if user_input != "yes":
+        print("処理を中止します。")
+        return False
+    return True
