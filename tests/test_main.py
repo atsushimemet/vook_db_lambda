@@ -61,6 +61,8 @@ class TestMainFunction(TestCase):
 
 
 class TestMainFunctionConfirmConfig(TestCase):
+    """note: S3バケットのみテスト。テストフラグも同様のテストになるため"""
+
     def test_confirm_bucket_name_yes(self):
         mock_input = Mock(return_value="yes")
         result = confirm_name("S3バケット", s3_bucket, input_func=mock_input)
