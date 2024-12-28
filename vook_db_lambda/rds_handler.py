@@ -3,11 +3,26 @@ import pymysql
 from sshtunnel import SSHTunnelForwarder
 
 from vook_db_lambda.local_config import (
-    get_ec2_config,
-    get_rds_config,
-    get_rds_config_for_put,
-    put_ec2_config,
+    ec2_config_dev,
+    ec2_config_prd,
+    rds_config_dev,
+    rds_config_prd,
 )
+
+
+# test_flg によって接続するDBを切り替える
+def get_ec2_config(test_flg):
+    if test_flg == 1:
+        return ec2_config_dev()
+    else:
+        return ec2_config_prd()
+
+
+def get_db_config(test_flg):
+    if test_flg == 1:
+        return rds_config_dev()
+    else:
+        return rds_config_prd()
 
 
 def read_sql_file(file_path):
@@ -26,23 +41,23 @@ def read_sql_file(file_path):
 
 
 def get_knowledges():
-    config_ec2 = get_ec2_config()
+    config = get_ec2_config()()
     query = read_sql_file("./vook_db_lambda/sql/knowledges.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
-        (config_ec2["host_name"], config_ec2["ec2_port"]),
-        ssh_username=config_ec2["ssh_username"],
-        ssh_pkey=config_ec2["ssh_pkey"],
+        (config["host_name"], config["ec2_port"]),
+        ssh_username=config["ssh_username"],
+        ssh_pkey=config["ssh_pkey"],
         remote_bind_address=(
-            config_ec2["rds_end_point"],
-            config_ec2["rds_port"],
+            config["rds_end_point"],
+            config["rds_port"],
         ),
     ) as server:
         print(f"Local bind port: {server.local_bind_port}")
         conn = None
         try:
             conn = pymysql.connect(
-                **get_rds_config(server.local_bind_port), connect_timeout=10
+                **get_db_config()(server.local_bind_port), connect_timeout=10
             )
             cursor = conn.cursor()
             cursor.execute(query)
@@ -63,23 +78,23 @@ def get_knowledges():
 
 
 def put_products(df_bulk):
-    config_ec2 = put_ec2_config()
+    config = get_ec2_config()()
     create_table_query = read_sql_file("./vook_db_lambda/sql/create_products.sql")
     insert_query = read_sql_file("./vook_db_lambda/sql/insert_into_products.sql")
     with SSHTunnelForwarder(
-        (config_ec2["host_name"], config_ec2["ec2_port"]),
-        ssh_username=config_ec2["ssh_username"],
-        ssh_pkey=config_ec2["ssh_pkey"],
+        (config["host_name"], config["ec2_port"]),
+        ssh_username=config["ssh_username"],
+        ssh_pkey=config["ssh_pkey"],
         remote_bind_address=(
-            config_ec2["rds_end_point"],
-            config_ec2["rds_port"],
+            config["rds_end_point"],
+            config["rds_port"],
         ),
     ) as server:
         print(f"Local bind port: {server.local_bind_port}")
         conn = None
         try:
             conn = pymysql.connect(
-                **get_rds_config_for_put(server.local_bind_port),
+                **get_db_config()(server.local_bind_port),
                 connect_timeout=10,
             )
             cursor = conn.cursor()
@@ -117,23 +132,23 @@ def put_products(df_bulk):
 
 
 def get_products():
-    config_ec2 = put_ec2_config()
+    config = get_ec2_config()()
     query = read_sql_file("./vook_db_lambda/sql/products.sql")
     df_from_db = pd.DataFrame()
     with SSHTunnelForwarder(
-        (config_ec2["host_name"], config_ec2["ec2_port"]),
-        ssh_username=config_ec2["ssh_username"],
-        ssh_pkey=config_ec2["ssh_pkey"],
+        (config["host_name"], config["ec2_port"]),
+        ssh_username=config["ssh_username"],
+        ssh_pkey=config["ssh_pkey"],
         remote_bind_address=(
-            config_ec2["rds_end_point"],
-            config_ec2["rds_port"],
+            config["rds_end_point"],
+            config["rds_port"],
         ),
     ) as server:
         print(f"Local bind port: {server.local_bind_port}")
         conn = None
         try:
             conn = pymysql.connect(
-                **get_rds_config_for_put(server.local_bind_port),
+                **get_db_config()(server.local_bind_port),
                 connect_timeout=10,
             )
             cursor = conn.cursor()
