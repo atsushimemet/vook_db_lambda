@@ -16,3 +16,4 @@ openpyxl
 pandas-stubs
 pytest
 types-requests
+types-PyMySQL
